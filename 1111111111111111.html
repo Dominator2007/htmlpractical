@@ -1,0 +1,412 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>МЕТОД ЭЙТКЕНА-СТЕФФЕНСОНА</title>
+	<link rel="image_src" href="/images/label_better_image.png" />
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script type="text/javascript" src="jquery.label_better.js"></script>
+  <style>
+    html {
+      height: 100%;
+    }
+    body {
+      background: #272D30;
+      padding: 0;
+      text-align: center;
+      font-family: 'open sans';
+      position: relative;
+      margin: 0;
+      height: 100%;
+    }
+    
+    .wrapper {
+    	height: auto !important;
+    	height: 100%;
+    	margin: 0 auto; 
+    	overflow: hidden;
+    }
+    
+    a {
+      text-decoration: none;
+    }
+    
+    
+    h1, h2 {
+      width: 100%;
+      float: left;
+    }
+    h1 {
+      margin-top: 100px;
+      color: #fff;
+      text-shadow: 0 1px 5px rgba(0,0,0,0.5);
+      margin-bottom: 5px;
+      font-size: 70px;
+      letter-spacing: -4px;
+    }
+    h2 {
+      color: #5F7591;
+      font-weight: bold;
+      text-shadow: 0 1px 5px rgba(0,0,0,0.5);
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
+    
+    .pointer {
+      color: #9b59b6;
+      font-family: 'Pacifico', cursive;
+      font-size: 30px;
+      margin-top: 15px;
+    }
+    pre {
+      margin: 80px auto;
+    }
+    pre code {
+      padding: 35px;
+      border-radius: 5px;
+      font-size: 15px;
+      background: rgba(0,0,0,0.1);
+      border: rgba(0,0,0,0.05) 5px solid;
+      max-width: 500px;
+    }
+    .main {
+      float: left;
+      width: 100%;
+      margin: 0 auto;
+    }
+    
+    
+    .main h1 {
+      padding:20px 50px;
+      float: left;
+      width: 100%;
+      font-size: 60px;
+      box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      font-weight: 100;
+      margin: 0;
+      padding-top: 25px;
+      font-family: 'Pacifico';
+      letter-spacing: 2px;
+    }
+   
+    .main h1.demo1 {
+      background: #1ABC9C;
+    }
+    
+    .reload.bell {
+      font-size: 12px;
+      padding: 20px;
+      width: 45px;
+      text-align: center;
+      height: 47px;
+      border-radius: 50px;
+      -webkit-border-radius: 50px;
+      -moz-border-radius: 50px;
+    }
+    
+    .reload.bell #notification {
+      font-size: 25px;
+      line-height: 140%;
+    }
+    
+    .reload, .btn{
+      display: inline-block;
+      border: 4px solid #A2261E;
+      border-radius: 5px;
+      -moz-border-radius: 5px;
+      -webkit-border-radius: 5px;
+      background: #CC3126;
+      display: inline-block;
+      line-height: 100%;
+      padding: 0.7em;
+      text-decoration: none;
+      color: #fff;
+      width: 100px;
+      line-height: 140%;
+      font-size: 17px;
+      font-family: open sans;
+      font-weight: bold;
+    }
+    .reload:hover{
+      background: #A2261E;
+    }
+    .btn {
+      width: 200px;
+      color: #fff;
+      border: none;
+      margin-left: 10px;
+      background: rgba(255, 255, 255, 0.11);
+    }
+    .clear {
+      width: auto;
+    }
+    .btn:hover, .btn:hover {
+      background: rgba(255,255,255,0.3);
+    }
+    .btns {
+      width: 410px;
+      margin: 50px auto;
+    }
+    .credit {
+      font-style: italic;
+      text-align: center;
+      color: #fff;
+      padding: 10px;
+      margin: 0 0 40px 0;
+      float: left;
+      width: 100%;
+    }
+    .credit a {
+      color: #ccc;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    
+    .back {
+      position: absolute;
+      top: 0;
+      left: 0;
+      text-align: center;
+      display: block;
+      padding: 7px;
+      width: 100%;
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      background: rgba(0, 0, 0, 0.65);
+      font-weight: bold;
+      font-size: 13px;
+      color: #fff;
+      -webkit-transition: all 200ms ease-out;
+      -moz-transition: all 200ms ease-out;
+      -o-transition: all 200ms ease-out;
+      transition: all 200ms ease-out;
+    }
+    .back:hover {
+      background: rgba(0, 0, 0, 0.85);
+    }
+    
+    .bl_form {
+      margin: 150px 0;
+    }
+    
+    .bl_form input {
+      padding-top: 15px;
+      background: rgba(255,255,255,0.10);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      border: none;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 25px;
+      font-size: 16px;
+      outline: none;
+    }
+    .lb_wrap .lb_label.top, .lb_wrap .lb_label.bottom {
+      left: 15px !important;
+    }
+    .lb_wrap .lb_label.left {
+      left: 0;
+    }
+    .lb_label {
+      font-weight: bold;
+      color: #999;
+    }
+    .lb_label.active {
+      color: #FFF;
+    }
+
+
+    /*======================================================================================*/
+   /* html,
+body {
+  width: 100%;
+  height: 100%;
+}
+body {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  font-size: 1.5;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  background: #da513d;
+  font-family: Lato, sans-serif;
+}*/
+/*.btn {
+  display: block;
+  padding: 1em 2em;
+  background: transparent;
+  color: #fff;
+  border: 1px solid #fff;
+  outline: 0;
+  text-transform: uppercase;
+  cursor: pointer;
+  -webkit-transition: 0.3s ease;
+  transition: 0.3s ease;
+  -webkit-appearance: none;
+}*/
+.btn:hover {
+  background: #fff;
+  color: #da513d;
+}
+.modal {
+  opacity: 0;
+  visibility: hidden;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(82,76,74,0.7);
+  -webkit-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
+}
+.modal__box {
+  padding: 1em;
+  background: #fff;
+  
+    text-shadow: 7px 1px 12px #402821, 0 0 1em #402821; /* Параметры тени */
+    color: #783D69; /* Белый цвет текста */
+    font-size: 2em; /* Размер надписи */
+  box-shadow: 0 0 10px 0 rgba(64,40,33,0.2);
+  text-align: center;
+  -webkit-transition: all 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.5);
+  transition: all 0.9s cubic-bezier(0.2, 0.9, 0.3, 1.5);
+  -webkit-transform: rotate(5deg) translate(-1em, 1em);
+          transform: rotate(5deg) translate(-1em, 1em);
+  border-top: 5px solid #9C5A65;
+  border-bottom: 5px solid #9C5A65;
+}
+/* modal magic */
+.btn:focus + .modal {
+  opacity: 1;
+  visibility: visible;
+}
+.btn:focus + .modal .modal__box {
+  -webkit-transform: rotate(0deg) translate(0, 0);
+          transform: rotate(0deg) translate(0, 0);
+}
+/*==========================================================================================*/
+    
+
+
+    
+	</style>
+	<script>
+    var x1;
+	  $(document).ready( function() {
+	    $(".label_better").label_better({
+	      easing: "bounce"
+	    });
+	  });
+		
+	</script>
+
+
+	<script type="text/javascript">
+
+ function f(x) {
+ 	return 9.2*x*x*x+3.3*x*x+4*x-1; //задаем уравнение   document.getElementById("Uravnenie").value;
+	
+}
+
+ function es(x, eps) {
+ 	
+ 	var x0, x1, x2, d;
+ 	do{
+ 		x0=x;
+		x1=f(x0);
+		x2=f(x1);
+		d=x0-2*x1+x2;
+		if (d!=0)
+		{
+			x=(x0*x2-x1*x1)/d;
+		}
+		else return x;
+ 	}
+ 	while(Math.abs(x-x0)> eps); //
+ 	return x;
+ }
+
+function someFunc() {
+  //alert(document.getElementById("Uravnenie").value);
+  eps = document.getElementById("eps").value;
+  x = document.getElementById("1").value;
+  
+ return es(x,eps);
+}
+ 
+// int main() {
+// 	double x, eps;
+// 	cin >> x >> eps;
+// 	cout << es(x, eps);
+// 	return 0;
+// }
+// =============================================================================
+
+
+	</script>
+<!-- ================================================================================== -->
+  <script type="text/javascript"> 
+    var x1;
+function change(id, val){
+  var elem = document.getElementById(id);
+  elem.textContent = "x1="+ val;
+}
+</script>
+<!-- // ============================================================================= -->
+</head>
+<body>
+
+  <div class="wrapper">
+	  <div class="main">
+	    <div class="header">
+        <h1>МЕТОД ЭЙТКЕНА-СТЕФФЕНСОНА</h1>
+        <h2>Практика кароч в 135</h2>
+        <p class="credit">Created by <a href="https://vk.com/id202414369">Maxim Kravtsov</a></p>
+
+
+       
+<button class="btn" onclick="var x1 = someFunc();change('result', x1);">asfasfas</button>
+
+         <button class="btn" onmousedown="var x1 = someFunc();change('result', x1);">Расчитать</button>
+            <div class="modal">
+                <div class="modal__box">
+                  <p id="result"> x1= </p>
+
+                    
+  </div>
+
+
+</div>
+  	  </div>
+      <div class="page-container">
+        <form class="bl_form">
+          <input type="number" id="Uravnenie"   class="label_better"  placeholder="9.2*x*x*x+3.3*x*x+4*x-1"  >
+          <input type="number" id="1"  class="label_better"  value="2" placeholder="Начальное значние x0">
+          <input type="number" id="eps"  class="label_better" value="0.005" placeholder="Приближение">
+          <!-- <input type="password" value="abcdefg" class="label_better" data-new-placeholder="Shhh.." placeholder="Confirm Password"> -->
+        </form>
+      </div>
+    </div>
+    <a href="https://www.instagram.com/_street_potatoes_/"><img style="position: absolute; top: 0; right: 0; border: 0; z-index: 50; height: 70px;" src="https://kostumologiya.ru/wp-content/uploads/instagram.png" alt="My instagram"></a>
+  </div>
+</body>
+</html>
